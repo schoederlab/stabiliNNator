@@ -27,6 +27,7 @@ import menten_gcn as mg
 import menten_gcn.decorators as decs
 
 import config
+from utils import GraphDataGenerator
 
 # main
 def main():
