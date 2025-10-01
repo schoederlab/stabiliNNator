@@ -35,7 +35,7 @@ python proliNNator/proliNNator.py -i <input_pdb_file> [OPTIONS]
 
 **Arguments:**
 *   `-i`, `--input`: Path to the input PDB file (required).
-*   `-m`, `--model`: Path to the pre-trained model file (default: `3D-model-v2.5.keras`).
+*   `-m`, `--model`: Path to the pre-trained model file.
 *   `-p`, `--pdb`: Name of the output PDB file with B-factors updated (default: `output.pdb`).
 *   `--csv`: Filename to save a CSV file containing per-residue proline probabilities (default: `output.csv`).
 *   `--ramachandran`: Filename to save a Ramachandran plot with probabilities as a PNG image (default: `ramachandran.png`).
@@ -59,5 +59,5 @@ python disulfiNNate/disulfiNNate.py -i <input_pdb_file> [OPTIONS]
 **Arguments:**
 *   `-i`, `--input`: Path to the input PDB file (required).
 *   `-o`, `--output`: Name of the output CSV file with per-pair disulfide bond probabilities (default: `out.csv`).
-*   `-m`, `--model`: Path to the pre-trained model file (default: `disulfiNNate-model.keras`).
+*   `-m`, `--model`: Path to the pre-trained model file.
 *   `--fastrelax`: Include this flag to perform a FastRelax simulation on the input structure before analysis.

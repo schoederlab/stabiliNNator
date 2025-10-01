@@ -34,7 +34,7 @@ def main():
     # Argument parser setup
     parser = argparse.ArgumentParser(description='ProliNNator is a tool that predicts Proline probabilties based on pretrained neural networks. \n Contact: Jakob.Riccabona@medizin.uni-leipzig.de')
     parser.add_argument('-i', '--input', type=str, required=True, help='Path to the input PDB file')
-    parser.add_argument('-m', '--model', type=str, default='3D-model-v2.5.keras', help='Path to the model')
+    parser.add_argument('-m', '--model', type=str, default='v3.4-GAT.keras', help='Path to the model')
     parser.add_argument('-p', '--pdb', type=str, default='output.pdb', help='Name of the output PDB file (default: output.pdb)')
     parser.add_argument('--csv', type=str, default='output.csv', help='Filename to save a csv file with the probabilities')
     parser.add_argument('--ramachandran', type=str, default='ramachandran.png', help='Filename to save a Ramachandran plot with probabilities as a PNG')
@@ -60,23 +60,10 @@ def main():
     # load model
     custom_objects = {'ECCConv': ECCConv, 'GlobalMaxPool': GlobalMaxPool, 'GATConv': GATConv}
     model = load_model(mod, custom_objects)
-    if 'v2.4' in mod:
         # Pick some decorators to add to your network
-        decorators = [decs.SequenceSeparation(ln = True),
-                      decs.SimpleBBGeometry(use_nm = False), 
-                      decs.Rosetta_Ref2015_TwoBodyEneriges(individual=True, score_types=[ScoreType.fa_rep,
-                                                                                     ScoreType.fa_atr, 
-                                                                                     ScoreType.fa_sol, 
-                                                                                     ScoreType.lk_ball_wtd, 
-                                                                                     ScoreType.fa_elec, 
-                                                                                     ScoreType.hbond_sr_bb, 
-                                                                                     ScoreType.hbond_lr_bb, 
-                                                                                     ScoreType.hbond_bb_sc, 
-                                                                                     ScoreType.hbond_sc])]
-
-    else:
-        decorators = [decs.SequenceSeparation(ln = True),
-                      decs.Rosetta_Ref2015_TwoBodyEneriges(individual=True, score_types=[ScoreType.fa_rep,
+    decorators = [decs.SequenceSeparation(ln = True),
+                  decs.SimpleBBGeometry(use_nm = False), 
+                  decs.Rosetta_Ref2015_TwoBodyEneriges(individual=True, score_types=[ScoreType.fa_rep,
                                                                                      ScoreType.fa_atr, 
                                                                                      ScoreType.fa_sol, 
                                                                                      ScoreType.lk_ball_wtd, 
