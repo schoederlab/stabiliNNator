@@ -6,7 +6,7 @@
 ProliNNator is a tool that predicts proline probabilities in protein structures using pre-trained neural networks. It takes a Protein Data Bank (PDB) file as input and outputs a CSV file with per-residue proline probabilities, and an updated PDB file where B-factors are replaced by these probabilities. It can also generate a Ramachandran plot visualizing these predictions.
 
 ### How it works
-ProliNNator employs Graph Convolutional Networks (GCNs) to analyze protein structures. It uses the `menten_gcn` library to convert PDB structures into graph representations, where residues are nodes and interactions are edges. A pre-trained Keras model (e.g., `3D-model-v2.5.keras`) then processes these graphs to predict the likelihood of each residue being a proline. Optionally, a FastRelax protocol from `PyRosetta` can be applied to the input structure before analysis.
+ProliNNator employs Graph Convolutional Networks (GCNs) to analyze protein structures. It uses the `menten_gcn` library to convert PDB structures into graph representations, where residues are nodes and interactions are edges. A pre-trained Keras model then processes these graphs to predict the likelihood of each residue being a proline. Optionally, a FastRelax protocol from `PyRosetta` can be applied to the input structure before analysis.
 
 ### Dependencies
 The `proliNNator` package relies on the following key Python libraries:
