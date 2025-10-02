@@ -37,7 +37,7 @@ def main():
     parser.add_argument('-m', '--model', type=str, default='v3.4-GAT.keras', help='Path to the model')
     parser.add_argument('-p', '--pdb', type=str, default='output.pdb', help='Name of the output PDB file (default: output.pdb)')
     parser.add_argument('--csv', type=str, default='output.csv', help='Filename to save a csv file with the probabilities')
-    parser.add_argument('--ramachandran', type=str, default='ramachandran.png', help='Filename to save a Ramachandran plot with probabilities as a PNG')
+    parser.add_argument('--ramachandran', type=str, default=None, help='Filename to save a Ramachandran plot with probabilities as a PNG')
     parser.add_argument('--fastrelax', action='store_true', help='Flag to perform a fast relax on the structure before analysis')
     args = parser.parse_args()
 
@@ -144,16 +144,15 @@ def main():
         for c in range(1, pose.pdb_info().num_chains() + 1):
             chain_start = pose.conformation().chain_begin(c)
             chain_end = pose.conformation().chain_end(c)
-            if '3D' in mod:
-                for i in range(chain_start, chain_end + 1):
-                    if counter < len(y_pred):
-                        phi = np.append(phi, pose.phi(i))
-                        psi = np.append(psi, pose.psi(i))
-                        weights = np.append(weights, y_pred[counter])
-                        counter += 1
+            for i in range(chain_start, chain_end + 1):
+                if counter < len(y_pred):
+                    phi = np.append(phi, pose.phi(i))
+                    psi = np.append(psi, pose.psi(i))
+                    weights = np.append(weights, y_pred[counter])
+                    counter += 1
         plotting_data = np.vstack((phi, psi, weights)).T
-        df_plot = pd.DataFrame(plotting_data, columns=['phi', 'psi', 'weight'])
-        sns.scatterplot(data=df_plot, x='phi', y='psi', hue='weight', hue_order= [0.0,0.25,0.5,0.75,1.0], palette='coolwarm')
+        df_plot = pd.DataFrame(plotting_data, columns=['phi', 'psi', 'probability'])
+        sns.scatterplot(data=df_plot, x='phi', y='psi', hue='probability', hue_order= [0.0,0.25,0.5,0.75,1.0], palette='coolwarm')
         plt.xlim(-180, 180)
         plt.ylim(-180, 180)
         plt.xlabel(r'$ \phi $', fontsize=14)
@@ -161,7 +160,7 @@ def main():
         ax = plt.gca()
         ax.set_aspect('equal', adjustable='box')
         plt.draw()
-        plt.legend(title='weights', bbox_to_anchor=(1.05,1), loc=2, borderaxespad=0.)
+        plt.legend(bbox_to_anchor=(1.05,1), loc=2, borderaxespad=0.)
         plt.tight_layout()
         plt.savefig(args.ramachandran, dpi=600)
        
