@@ -68,6 +68,8 @@ X_ros, y_ros = apply_sampler(sampler, X_train, out_train)
 A_ros, _     = apply_sampler(sampler, A_train, out_train)
 E_ros, _     = apply_sampler(sampler, E_train, out_train)
 
+E_masked = utils.mask_edge_features_by_target_node(X_ros, E_ros)
+
 # Define GCN model
 gcn_model = GCNModel(data_generator)
 gcn_model.compile_model()
@@ -83,7 +85,7 @@ early_stopping = keras.callbacks.EarlyStopping(
 )
 
 # Train the model
-history = gcn_model.fit(X_train, A_train, E_train, out_train, X_test, A_test, E_test, out_test, batch_size=config.BATCH_SIZE, epochs=config.EPOCHS, callbacks=[early_stopping])
+history = gcn_model.fit(X_ros, A_ros, E_masked, y_ros, X_test, A_test, E_test, out_test, batch_size=config.BATCH_SIZE, epochs=config.EPOCHS, callbacks=[early_stopping])
 gcn_model.save(config.MODEL_SAVE_FILENAME)
 
 #further validation

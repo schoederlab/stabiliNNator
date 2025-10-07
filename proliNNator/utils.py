@@ -33,7 +33,41 @@ class GraphDataGenerator:
     def generate_XAE_input_layers(self):
         return self.data_maker.generate_XAE_input_layers()
 
+def mask_edge_features_by_target_node(X, E):
+    """
+    
+    Zero out edge features E[i, j, :] and E[j, i, :] if node i OR node j is a target node
+    (i.e., if the first node feature dimension X[i, 0] == 1 OR X[j, 0] == 1).
+    The adjacency matrix A is NOT modified.
+
+    :param X: Node features array (N_graphs, N_max, F_node)
+    :param E: Edge features array (N_graphs, N_max, N_max, F_edge)
+    :return: Masked edge features array (N_graphs, N_max, N_max, F_edge)
+    
+    """
+    E_masked = np.copy(E)
+    N_graphs = X.shape[0]
+
+    for g in range(N_graphs):
+        X_g = X[g]
+        E_g = E_masked[g]
+
+        target_node_mask = (X_g[:, 0] == 1).reshape(-1, 1)
+
+        row_mask = target_node_mask
+        col_mask = target_node_mask.T
+
+        combined_mask_2d = np.logical_or(row_mask, col_mask)
+        E_g[combined_mask_2d] = 0
+
+    return E_masked
+
 def load_npz_files(path):
+    """
+    
+    simple function to load stored graphs.
+    
+    """
     data = np.load(f'{path}/merged_file.npz')
     Xs = data['Xs']
     As = data['As']
