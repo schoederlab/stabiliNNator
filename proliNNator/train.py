@@ -85,7 +85,7 @@ early_stopping = keras.callbacks.EarlyStopping(
 )
 
 # Train the model
-history = gcn_model.fit(X_ros, A_ros, E_masked, y_ros, X_test, A_test, E_test, out_test, batch_size=config.BATCH_SIZE, epochs=config.EPOCHS, callbacks=[early_stopping])
+history = gcn_model.fit(X_ros, A_ros, E_ros, y_ros, X_test, A_test, E_test, out_test, batch_size=config.BATCH_SIZE, epochs=config.EPOCHS, callbacks=[early_stopping])
 gcn_model.save(config.MODEL_SAVE_FILENAME)
 
 #further validation
@@ -93,13 +93,13 @@ y_pred_prob = gcn_model.predict(X_val, A_val, E_val)
 y_pred_prob = np.round(y_pred_prob, 5)
 y_pred = (y_pred_prob > 0.5).astype(int)
 
-mcc = matthews_corrcoef(out_test, y_pred)
+mcc = matthews_corrcoef(out_val, y_pred)
 print('Matthews Coefficient:', mcc)
-fpr, tpr, thresholds = roc_curve(out_test, y_pred_prob)
-auc = roc_auc_score(out_test, y_pred_prob)
+fpr, tpr, thresholds = roc_curve(out_val, y_pred_prob)
+auc = roc_auc_score(out_val, y_pred_prob)
 print('auc:', auc)
-precision, recall, thresholds = precision_recall_curve(out_test, y_pred_prob)
-cm = confusion_matrix(out_test, y_pred)
+precision, recall, thresholds = precision_recall_curve(out_val, y_pred_prob)
+cm = confusion_matrix(out_val, y_pred)
 cmn = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
 #Plottings
