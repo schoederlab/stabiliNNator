@@ -7,6 +7,7 @@ import menten_gcn as mg
 import menten_gcn.decorators as decs
 
 from tensorflow.keras.models import load_model
+from spektral.layers import *
 
 import numpy as np
 import pandas as pd
