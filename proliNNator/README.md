@@ -1,4 +1,4 @@
-# Proline Probability Graph Pipeline
+# proliNNator
 
 End-to-end utilities to label proline residues in protein structures, train a graph neural network, and annotate new PDBs with predicted proline probabilities.
 
@@ -22,13 +22,19 @@ Install (example):
 pip install biopython torch torchvision torchaudio pyg-lib torch_geometric numpy matplotlib scikit-learn
 ```
 
+Docker installation:
+
+```bash
+sudo docker build -t prolinnator:latest .
+```
+
 ## Usage
 
 ### 1. Generate Graphs
 
 ```bash
 python graph_generation.py \
-  --dataset-dir /media/data/jri/cath_S40/whole-dataset \
+  --dataset-dir DATA_DIR \
   --output-path graphs.jsonl
 ```
 
@@ -44,7 +50,7 @@ Key features per residue:
 ```bash
 python graph_visualization.py \
   --graph-file graphs.jsonl \
-  --structure-id 2g3aA01 \
+  --structure-id ID \
   --output-path example.png
 ```
 
@@ -71,15 +77,27 @@ Notes:
 ### 4. Predict on New Structures
 
 ```bash
-python predict_proline_probabilities.py \
+python proliNNator.py \
   --model-path models/proline_gat.pt \
-  --pdb-path /media/data/jri/cath_S40/whole-dataset/2g3aA01.pdb \
-  --output-path annotated/2g3aA01_probs.pdb \
+  --pdb-path PDB_PATH \
+  --output-path OUT_PATH \
   --hidden-dim 32 \
   --device cuda
 ```
 
 The output PDB stores per-residue proline probabilities in the B-factor column (identical value for all atoms in a residue).
+
+### 5. Docker execution
+
+```bash
+docker run --gpus all \
+ -v $(PWD)/test:/data prolinnator:latest python proliNNator.py \
+ --model-path models/proline_gat.pt \
+ --pdb-path test/3ft7.pdb \
+ --output-path data/out.pdb \
+ --hidden-dim 32 \
+ --device cuda
+```
 
 ## Tips
 
