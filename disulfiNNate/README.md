@@ -9,19 +9,6 @@ End-to-end utilities to detect disulfide-bonded cysteines in protein structures,
 - `train_gcn.py`: trains a GATv2 + MLP node classifier with class-weighted BCE, optional kernel L2 penalty, early stopping, and diagnostic plots (loss curves, PR curve, normalized confusion matrix).
 - `predict_cysteine_probabilities.py`: loads a trained model, rebuilds the same feature graph for a single PDB, and writes per-residue probabilities to the B-factor column.
 
-## Requirements
-
-- Python 3.10+
-- [Biopython](https://biopython.org/) for structure parsing
-- PyTorch + PyTorch Geometric (with GATv2Conv support)
-- NumPy, Matplotlib, scikit-learn
-
-Example install:
-
-```bash
-pip install biopython torch torchvision torchaudio pyg-lib torch_geometric numpy matplotlib scikit-learn
-```
-
 ## Usage
 
 ### 1. Generate Graphs

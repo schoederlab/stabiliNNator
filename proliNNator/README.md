@@ -16,12 +16,6 @@ End-to-end utilities to label proline residues in protein structures, train a gr
 - PyTorch + PyTorch Geometric
 - NumPy, Matplotlib, scikit-learn
 
-Install (example):
-
-```bash
-pip install biopython torch torchvision torchaudio pyg-lib torch_geometric numpy matplotlib scikit-learn
-```
-
 Docker installation:
 
 ```bash
