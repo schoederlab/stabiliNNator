@@ -8,7 +8,6 @@ stabillinator contains two graph neural networks, prolinnator and disulfinnate, 
 conda create --name stabilinnator python=3.10
 conda activate stabilinnator
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-pip install torch-scatter torch-sparse torch-cluster torch-spline-conv -f https://data.pyg.org/whl/torch-2.2.0+cpu.html
 pip install torch_geometric
 pip install pyg_lib torch_scatter torch_sparse -f https://data.pyg.org/whl/torch-2.11.0+cpu.html
 ```
